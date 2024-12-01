@@ -10,3 +10,9 @@ Route::get('/', function () {
 
 
 Route::post("service/register",[ApiController::class, 'register'])->name('Register');
+
+Route::post("service/login",[ApiController::class, 'login'])->name('login');
+
+Route::get('/docs', function () {
+    return view('l5-swagger::index');
+});
