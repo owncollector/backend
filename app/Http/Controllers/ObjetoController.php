@@ -88,19 +88,77 @@ class ObjetoController extends Controller
 
 
 
-
+      /**
+     * Obtener los objetos (trash) de un usuario y calcular el total.
+     *
+     * @OA\Get(
+     *     path="/objetos/trash/{user_id}",
+     *     summary="Obtener los objetos de un usuario y calcular el total",
+     *     description="Devuelve una lista de objetos asociados a un usuario y el total de sus valores",
+     *     tags={"Objetos"},
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         description="ID del usuario",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             example=1
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Operación exitosa",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(
+     *                 property="trash",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     type="object",
+     *                     @OA\Property(property="nombre", type="string", example="Objeto 1"),
+     *                     @OA\Property(property="valor", type="number", format="float", example=99.99)
+     *                 )
+     *             ),
+     *             @OA\Property(property="total", type="number", format="float", example=150.49)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Usuario no encontrado",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Usuario no encontrado")
+     *         )
+     *     )
+     * )
+     */
+    
     // Método para obtener todos los objetos
-    public function index()
+    public function getTrash($id)
     {
-        // Obtener todos los objetos incluyendo el user_id
-        $objetos = Objeto::select('id', 'user_id', 'nombre', 'valor')->get();
+        // Filtrar los objetos por el user_id
+        $objetos = Objeto::where('user_id', $id)->get();
+
+        // Mapear los datos al formato requerido
+        $trash = $objetos->map(function ($objeto) {
+            return [
+                'nombre' => $objeto->nombre,
+                'valor' => $objeto->valor,
+            ];
+        });
+
+        // Calcular el total de los valores
+        $total = $objetos->sum('valor');
 
         return response()->json([
             'success' => true,
-            'data' => $objetos,
+            'trash' => $trash,
+            'total' => $total,
         ]);
     }
-
    
     }
 

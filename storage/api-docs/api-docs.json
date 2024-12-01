@@ -309,6 +309,88 @@
                     }
                 }
             }
+        },
+        "/objetos/trash/{user_id}": {
+            "get": {
+                "tags": [
+                    "Objetos"
+                ],
+                "summary": "Obtener los objetos de un usuario y calcular el total",
+                "description": "Devuelve una lista de objetos asociados a un usuario y el total de sus valores",
+                "operationId": "3745756c862a5777cbca331cfa7177b3",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "ID del usuario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "trash": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "nombre": {
+                                                        "type": "string",
+                                                        "example": "Objeto 1"
+                                                    },
+                                                    "valor": {
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 99.99
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "total": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 150.49
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Usuario no encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "tags": [
