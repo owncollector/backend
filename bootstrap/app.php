@@ -17,7 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'api/register', 
             'api/login',
             'api/store',
-            'api/index'
+            
 
         ]);
     })
