@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\ImageAnalysisController ;
+use App\Http\Controllers\ImageAnalysisController;
 use App\Http\Controllers\ObjetoController;
 
 Route::get('/', function () {

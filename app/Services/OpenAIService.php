@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use OpenAI\Client;
+use OpenAI\Laravel\Facades\OpenAI;
 
 class OpenAIService
 {
@@ -10,9 +10,7 @@ class OpenAIService
 
     public function __construct()
     {
-        $this->client = Client::factory([
-            'api_key' => env('OPENAI_API_KEY'),
-        ]);
+        
     }
 
     /**
@@ -24,33 +22,50 @@ class OpenAIService
     public function analyzeImage(string $base64Image): array
     {
         // Construye el contenido del mensaje
-        $content = [
+        $content = 
+        [
             [
-                'role' => 'user',
-                'content' => json_encode([
+                "role" => "user",
+                "content" => [
                     [
-                        'type' => 'text',
-                        'text' => '¿Qué hay en esta imagen? Clasifica como orgánico o inorgánico, y dame un puntaje ambiental (0 a 1, usando decimables base a 100, por ejemplo "0.45") sobre el impacto de reciclarlo. ademas devuelveme una descripcion super brebe y detallada en maximo 3 palabras de lo que hay en la imagen, solo me tienes que regresas un json de esta manera ejemplo: {"name: "bolsa de papel","classification": 0.45, "type": "organico" }',
+                        "type" => "text",
+                        "text" => '¿Qué hay en esta imagen? Clasifica como orgánico o inorgánico, y dame un puntaje ambiental (0 a 1, usando decimales base a 100, por ejemplo "0.45") sobre el impacto de reciclarlo. Además, devuélveme una descripción super breve y detallada en máximo 3 palabras de lo que hay en la imagen. Solo me tienes que regresar un JSON de esta manera: {"name": "bolsa de papel", "classification": 0.45, "type": "orgánico"}.'
                     ],
                     [
-                        'type' => 'image_url',
-                        'image_url' => [
-                            'url' => "data:image/jpeg;base64,{$base64Image}",
-                        ],
-                    ],
-                ]),
-            ],
+                        "type" => "image_url",
+                        "image_url" => [
+                            "url" => $base64Image
+                        ]
+                    ]
+                ]
+            ]
         ];
-
+        info($base64Image);
         // Realiza la solicitud a OpenAI
-        $response = $this->client->chat()->create([
-            'model' => 'gpt-4',
+        $response = OpenAI::chat()->create([
+            'model' => 'gpt-4o-mini',
             'messages' => $content,
         ]);
 
+        info(json_encode($response));
         // Procesa la respuesta
         $message = $response['choices'][0]['message']['content'] ?? null;
 
-        return $message ? json_decode($message, true) : ['error' => 'Error analyzing the image'];
+        if ($message) {
+            // Limpia el mensaje para extraer solo el JSON
+            $jsonStart = strpos($message, '{');
+            $jsonEnd = strrpos($message, '}');
+
+            if ($jsonStart !== false && $jsonEnd !== false) {
+                $jsonString = substr($message, $jsonStart, $jsonEnd - $jsonStart + 1);
+                $decodedJson = json_decode($jsonString, true);
+
+                if ($decodedJson) {
+                    return $decodedJson; // Retorna el JSON decodificado como un array asociativo
+                }
+            }
+        }
+
+        return ['error' => 'Error extracting JSON'];
     }
 }
