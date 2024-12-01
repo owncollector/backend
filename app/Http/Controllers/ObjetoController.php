@@ -92,7 +92,7 @@ class ObjetoController extends Controller
      * Obtener los objetos (trash) de un usuario y calcular el total.
      *
      * @OA\Get(
-     *     path="/objetos/trash/{user_id}",
+     *     path="/objetos/getTrash/{user_id}",
      *     summary="Obtener los objetos de un usuario y calcular el total",
      *     description="Devuelve una lista de objetos asociados a un usuario y el total de sus valores",
      *     tags={"Objetos"},
@@ -135,7 +135,7 @@ class ObjetoController extends Controller
      *     )
      * )
      */
-    
+
     // Método para obtener todos los objetos
     public function getTrash($id)
     {

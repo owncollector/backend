@@ -310,14 +310,14 @@
                 }
             }
         },
-        "/objetos/trash/{user_id}": {
+        "/objetos/getTrash/{user_id}": {
             "get": {
                 "tags": [
                     "Objetos"
                 ],
                 "summary": "Obtener los objetos de un usuario y calcular el total",
                 "description": "Devuelve una lista de objetos asociados a un usuario y el total de sus valores",
-                "operationId": "3745756c862a5777cbca331cfa7177b3",
+                "operationId": "7660e962332db19e7c3ba1f29fb00a60",
                 "parameters": [
                     {
                         "name": "user_id",
