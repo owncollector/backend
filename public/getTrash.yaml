@@ -1,0 +1,55 @@
+openapi: 3.0.0
+info:
+  title: API de Objetos
+  version: 1.0.0
+paths:
+  /objetos/trash/{user_id}:
+    get:
+      summary: Obtener objetos filtrados por user_id
+      description: Retorna un array de objetos (nombre y valor) y el total de los valores para el user_id especificado.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID del usuario para filtrar los objetos.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Éxito al obtener los objetos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  trash:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        nombre:
+                          type: string
+                          example: "Nombre del objeto"
+                        valor:
+                          type: number
+                          format: float
+                          example: 99.99
+                  total:
+                    type: number
+                    format: float
+                    example: 199.98
+        '404':
+          description: No se encontraron objetos para el user_id especificado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                    example: "No se encontraron objetos para este usuario."
+
