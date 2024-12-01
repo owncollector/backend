@@ -1,0 +1,59 @@
+openapi: 3.0.0
+info:
+  title: API de Autenticación
+  version: 1.0.0
+paths:
+  /api/login:
+    post:
+      tags:
+        - Auth
+      summary: Iniciar sesión
+      description: Permite a los usuarios iniciar sesión en la aplicación.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: johndoe@example.com
+                password:
+                  type: string
+                  format: password
+                  example: secret123
+      responses:
+        '200':
+          description: Inicio de sesión exitoso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Inicio de sesión exitoso
+                  data:
+                    type: object
+                    additionalProperties: true
+        '401':
+          description: Credenciales incorrectas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Las credenciales son incorrectas
