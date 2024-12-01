@@ -140,7 +140,7 @@ class ObjetoController extends Controller
     public function getTrash($id)
     {
         // Filtrar los objetos por el user_id
-        $objetos = Objeto::where('user_id', $id)->get();
+        $objetos = Objeto::where('user_id', $id)->orderby('id', 'desc')->get();
 
         // Mapear los datos al formato requerido
         $trash = $objetos->map(function ($objeto) {
