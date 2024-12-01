@@ -13,6 +13,8 @@ Route::post("service/register",[ApiController::class, 'register'])->name('Regist
 
 Route::post("service/login",[ApiController::class, 'login'])->name('login');
 
+Route::post("service/store",[ObjetoController::class, 'store'])->name('store');
+
 Route::get('/docs', function () {
     return view('l5-swagger::index');
 });
