@@ -9,7 +9,9 @@ Route::get('/', function () {
 
 Route::post("api/register",[ApiController::class, 'register'])->name('Register');
 
+Route::post("api/login",[ApiController::class, 'login'])->name('login');
+
 Route::get('/docs', function () {
     return view('l5-swagger::index');
 });
-
+Route::get('/docs', [ApiDocsController::class, 'swagger']);

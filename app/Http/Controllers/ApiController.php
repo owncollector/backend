@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Session;
+
 /**
  * @OA\Info(
  *     title="API Register",
@@ -54,11 +56,21 @@ class ApiController extends Controller
      *     )
      * )
      */
+
     public function register(Request $request)
     {
        $name = $request->name ;
        $email = $request->email;
        $password =Hash::make($request->password); 
+
+        $useremail= User::getUserbyemail($email);
+        if($useremail){
+            return response()->json([
+                'message'=>'Ya hay un usuario registrado con este correo',
+                'data'=> ''
+               ],500);  
+        }
+        
 
        $user = User::create([
         'name'=> $name,
@@ -69,8 +81,37 @@ class ApiController extends Controller
        return response()->json([
         'message'=>'Usuario registrado exitosamente',
         'data'=> $user
-       ],200);
+       ],200);  
+    }
+
+    public function login (Request $request){
+        $email = $request->email;
+       $password =Hash::make($request->password); 
+
+       $credentials = [
+        'email' => $email,
+        'password' => $password,
+    ];
+
+    //Verify data
+    $auth = Auth::attempt($credentials);
+    
+    if($auth){;
+        
+        $auth = Auth::attempt($credentials);
+        $user = Auth::user();
+        Session::put([
+            'user' => $user,
+        ]);
+
+        $response = response()->json([
+            'success' => true,
+            'message' => "Inicio de sesion exitoso",
+            'data'   => '',
+            ]
+        );
 
 
     }
+}
 }

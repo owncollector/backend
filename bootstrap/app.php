@@ -12,7 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->validateCsrfTokens(except: [
-            'owncollector.mainu.com.mx',
+            'api/register',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
