@@ -1,0 +1,74 @@
+openapi: 3.0.0
+info:
+  title: ApiRegister
+  description: Api para registrar 'name', 'email' y 'password'.
+  version: 1.0.0
+servers:
+  - url: http://owncollector.mainu.com.mx
+    description: wncontroller
+
+paths:
+  /register:
+    post:
+      summary: Registrar Usuario Nuevo
+      description: Endpoint para crear un usuario. El password será encriptado en el servidor.
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - password
+              properties:
+                name:
+                  type: string
+                  example: Carlos Casas
+                email:
+                  type: string
+                  format: email
+                  example: casascarlos426@gmail.com
+                password:
+                  type: string
+                  format: password
+                  example: register123
+      responses:
+        '200':
+          description: El usuario se registró exitosamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User registered successfully
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: Carlos Casas
+                      email:
+                        type: string
+                        example: casascarlos426@gmail.com
+        '422':
+          description: Error de Validación
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: The email field is required
+
+    
+    

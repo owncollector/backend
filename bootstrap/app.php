@@ -11,8 +11,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->validateCsrfTokens(except: [
+            'owncollector.mainu.com.mx',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
+
+    L5Swagger\L5SwaggerServiceProvider::class;

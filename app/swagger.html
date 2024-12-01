@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation</title>
+    <link rel="stylesheet" href="{{ asset('swagger-ui.css') }}">
+    <script src="{{ asset('swagger-ui-bundle.js') }}"></script>
+    <script src="{{ asset('swagger-ui-standalone-preset.js') }}"></script>
+    <style>
+        body {
+            margin: 0;
+            background: #f4f4f4;
+        }
+        #swagger-ui {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+    <div id="swagger-ui"></div>
+    <script>
+        const ui = SwaggerUIBundle({
+            url: "{{ url('openapi.yaml') }}", // Ruta a tu archivo openapi.yaml
+            dom_id: '#swagger-ui',
+            presets: [
+                SwaggerUIStandalonePreset
+            ],
+            layout: "BaseLayout"
+        });
+    </script>
+</body>
+</html>
